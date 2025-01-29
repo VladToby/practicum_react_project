@@ -18,5 +18,10 @@ export interface ApiResponse<T> {
 export const ingredientsApi = {
     getIngredients: () =>
         api.get<ApiResponse<IIngredient[]>>('/ingredients')
-            .then(response => response.data),
+            .then(res => {
+                if (res.data.success) {
+                    return res.data;
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
 }
