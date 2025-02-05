@@ -1,0 +1,33 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #131316;
+  color: #f2f2f3;
+}
+
+.main {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  gap: 40px;
+  flex-grow: 1;
+}
+
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  font-size: 24px;
+  color: #f2f2f3;
+}
+
+.error {
+  color: #e52b1a;
+}

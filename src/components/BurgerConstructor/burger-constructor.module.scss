@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 600px;
+}
+
+.components {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bun {
+  margin-left: 32px;
+  margin-right: 8px;
+}
+
+.fillings {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: calc(100vh - 536px);
+  overflow-y: auto;
+  padding-right: 8px;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #2F2F37;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #8585AD;
+  }
+}
+
+.filling {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 40px;
+  padding-right: 16px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  svg {
+    width: 36px;
+    height: 36px;
+  }
+}
