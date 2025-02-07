@@ -1,33 +1,85 @@
 import React, { FC } from 'react'
-import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch } from '../../services/types'
+import { useDrop } from 'react-dnd'
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { addIngredient, removeIngredient, moveIngredient } from '../../services/actions/burger-constructor'
 import { IIngredient } from '../../types'
 import { Modal } from '../Modal/modal'
 import { OrderDetails } from '../OrderDetails/order-details'
+import { createOrder } from '../../services/actions/order'
+import { RootState } from '../../services/types'
+import { ConstructorItem } from './constructor-item'
 import styles from './burger-constructor.module.scss'
 
-interface BurgerConstructorProps {
-    ingredients: IIngredient[]
-}
-
-export const BurgerConstructor: FC<BurgerConstructorProps> = ({ ingredients }) => {
+export const BurgerConstructor: FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
     const [isOrderModalOpen, setIsOrderModalOpen] = React.useState(false)
 
-    // Хардкод для демонстрации
-    const bun = ingredients.find(item => item.type === 'bun')
-    const fillings = ingredients.filter(item => item.type !== 'bun').slice(0, 5)
+    const { bun, ingredients: selectedIngredients } = useSelector(
+        (state: RootState) => state.burgerConstructor
+    )
+
+    const handleDelete = (uuid: string) => {
+        dispatch(removeIngredient(uuid))
+    }
+
+    const moveItem = (dragIndex: number, hoverIndex: number) => {
+        dispatch(moveIngredient(dragIndex, hoverIndex))
+    }
 
     const totalPrice = React.useMemo(() => {
         const bunPrice = bun ? bun.price * 2 : 0
-        const fillingsPrice = fillings.reduce((sum, item) => sum + item.price, 0)
-        return bunPrice + fillingsPrice
-    }, [bun, fillings])
+        const ingredientsPrice = selectedIngredients?.length
+            ? selectedIngredients.reduce((sum, item) => sum + item.price, 0)
+            : 0
+        return bunPrice + ingredientsPrice
+    }, [bun, selectedIngredients])
+
+    const handleOrderClick = () => {
+        if (!bun) return
+
+        const orderIngredients = [
+            bun._id,
+            ...selectedIngredients.map(item => item._id),
+            bun._id
+        ]
+
+        dispatch(createOrder(orderIngredients))
+        setIsOrderModalOpen(true)
+    }
+
+    const [{ isHover, itemType }, dropTarget] = useDrop({
+        accept: 'ingredient',
+        drop(item: IIngredient) {
+            dispatch(addIngredient(item))
+        },
+        collect: monitor => ({
+            isHover: monitor.isOver(),
+            itemType: monitor.getItem()?.type
+        }),
+    })
+
+    const getDropTargetClass = (targetType: 'bun' | 'ingredient', position?: 'top' | 'bottom') => {
+        const isTargetHighlighted = isHover &&
+            ((targetType === 'bun' && itemType === 'bun') ||
+                (targetType === 'ingredient' && itemType !== 'bun'))
+
+        return `${styles.placeholder} 
+            ${isTargetHighlighted ? styles.highlighted : ''} 
+            ${position === 'top' ? styles.bunTop : ''} 
+            ${position === 'bottom' ? styles.bunBottom : ''}`
+    }
 
     return (
         <>
-            <section className={styles.container}>
+            <section
+                ref={dropTarget}
+                className={`${styles.constructor} ${isHover ? styles.hover : ''}`}
+            >
                 <div className={styles.components}>
-                    {bun && (
-                        <div className={styles.bun}>
+                    <div className={styles.bun}>
+                        {bun ? (
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
@@ -35,24 +87,36 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({ ingredients }) =
                                 price={bun.price}
                                 thumbnail={bun.image}
                             />
-                        </div>
-                    )}
-
-                    <div className={styles.fillings}>
-                        {fillings.map((item, index) => (
-                            <div key={index} className={styles.filling}>
-                                <DragIcon type="primary" />
-                                <ConstructorElement
-                                    text={item.name}
-                                    price={item.price}
-                                    thumbnail={item.image}
-                                />
+                        ) : (
+                            <div className={getDropTargetClass('bun', 'top')}>
+                                <p className="text text_type_main-default text_color_inactive">
+                                    Выберите булки
+                                </p>
                             </div>
-                        ))}
+                        )}
                     </div>
 
-                    {bun && (
-                        <div className={styles.bun}>
+                    <div className={`${styles.fillings} ${selectedIngredients?.length ? styles.fillingWithContent : ''}`}>
+                        {selectedIngredients?.length > 0 ? (
+                            selectedIngredients.map((item, index) => (
+                                <ConstructorItem
+                                    key={item.uuid}
+                                    item={item}
+                                    index={index}
+                                    handleDelete={handleDelete}
+                                    moveItem={moveItem}
+                                />
+                            ))                    ): (
+                            <div className={getDropTargetClass('ingredient')}>
+                                <p className="text text_type_main-default text_color_inactive">
+                                    Выберите начинку
+                                </p>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={styles.bun}>
+                        {bun ? (
                             <ConstructorElement
                                 type="bottom"
                                 isLocked={true}
@@ -60,10 +124,15 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({ ingredients }) =
                                 price={bun.price}
                                 thumbnail={bun.image}
                             />
-                        </div>
-                    )}
+                        ) : (
+                            <div className={getDropTargetClass('bun', 'bottom')}>
+                                <p className="text text_type_main-default text_color_inactive">
+                                    Выберите булки
+                                </p>
+                            </div>
+                        )}
+                    </div>
                 </div>
-
                 <div className={styles.total}>
                     <div className={styles.price}>
                         <span className="text text_type_digits-medium">{totalPrice}</span>
@@ -72,17 +141,17 @@ export const BurgerConstructor: FC<BurgerConstructorProps> = ({ ingredients }) =
                     <Button
                         type="primary"
                         size="large"
-                        onClick={() => setIsOrderModalOpen(true)}
-                        htmlType={'submit'}
+                        onClick={handleOrderClick}
+                        htmlType="button"
+                        disabled={!bun || !selectedIngredients?.length}
                     >
                         Оформить заказ
                     </Button>
                 </div>
             </section>
-
             {isOrderModalOpen && (
                 <Modal onClose={() => setIsOrderModalOpen(false)}>
-                    <OrderDetails orderNumber={34536} />
+                    <OrderDetails />
                 </Modal>
             )}
         </>
