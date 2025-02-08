@@ -24,6 +24,10 @@ export interface IIngredient {
     image_large: string
 }
 
+export interface IConstructorIngredient extends IIngredient {
+    uuid: string
+}
+
 export interface IConstructorState {
     bun: IIngredient | null
     ingredients: Array<IIngredient & { uuid: string }>

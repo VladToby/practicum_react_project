@@ -5,12 +5,12 @@ import {
     CLEAR_CONSTRUCTOR
 } from '../constants'
 import { Action } from 'redux'
-import { IIngredient } from '../types'
+import { IIngredient, IConstructorIngredient } from '../types'
 import { v4 as uuidv4 } from 'uuid'
 
-export interface IAddIngredientAction extends Action {
+export interface IAddIngredientAction {
     type: typeof ADD_INGREDIENT
-    payload: IIngredient & { uuid?: string }
+    payload: IIngredient | IConstructorIngredient
 }
 
 export interface IRemoveIngredientAction extends Action {
@@ -36,12 +36,9 @@ export type TConstructorActions =
     | IMoveIngredientAction
     | IClearConstructorAction
 
-export const addIngredient = (ingredient: IIngredient): IAddIngredientAction => ({
+export const addIngredient = (item: IIngredient): IAddIngredientAction => ({
     type: ADD_INGREDIENT,
-    payload: {
-        ...ingredient,
-        uuid: ingredient.type === 'bun' ? undefined : uuidv4()
-    }
+    payload: item.type === 'bun' ? item : { ...item, uuid: uuidv4() }
 })
 
 export const removeIngredient = (uuid: string): IRemoveIngredientAction => ({

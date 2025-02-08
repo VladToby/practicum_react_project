@@ -4,9 +4,13 @@ import {
     MOVE_INGREDIENT,
     CLEAR_CONSTRUCTOR
 } from '../constants'
-import { v4 as uuidv4 } from 'uuid'
-import { IConstructorState, IIngredient } from '../types'
+import { IIngredient, IConstructorIngredient } from '../types'
 import { TConstructorActions } from '../actions/burger-constructor'
+
+interface IConstructorState {
+    bun: IIngredient | null
+    ingredients: IConstructorIngredient[]
+}
 
 const initialState: IConstructorState = {
     bun: null,
@@ -23,12 +27,12 @@ export const burgerConstructorReducer = (
             if (item.type === 'bun') {
                 return {
                     ...state,
-                    bun: item
+                    bun: item as IIngredient
                 }
             }
             return {
                 ...state,
-                ingredients: [...state.ingredients, { ...item, uuid: uuidv4() } as IIngredient & { uuid: string }]
+                ingredients: [...state.ingredients, item as IConstructorIngredient]
             }
         }
         case REMOVE_INGREDIENT: {

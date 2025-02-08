@@ -1,26 +1,41 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { IIngredient } from '../../types'
 import { Modal } from '../Modal/modal'
 import { IngredientDetails } from '../IngredientDetails/ingredient-details'
-import styles from './burger-ingredients.module.scss'
+import { RootState } from '../../services/types'
 import { IngredientCard } from './ingredient-card'
-
-interface BurgerIngredientsProps {
-    ingredients: IIngredient[]
-    counts: { [key: string]: number }
-}
+import styles from './burger-ingredients.module.scss'
 
 type TabType = 'bun' | 'sauce' | 'main'
 
-export const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ingredients, counts}) => {
+export const BurgerIngredients: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<TabType>('bun')
     const [selectedIngredient, setSelectedIngredient] = useState<IIngredient | null>(null)
+    const ingredients = useSelector((state: RootState) => state.ingredients.items)
+    const { bun, ingredients: selectedIngredients } = useSelector(
+        (state: RootState) => state.burgerConstructor
+    )
 
     const containerRef = useRef<HTMLDivElement>(null)
     const bunsRef = useRef<HTMLDivElement>(null)
     const saucesRef = useRef<HTMLDivElement>(null)
     const mainsRef = useRef<HTMLDivElement>(null)
+
+    const counts = useMemo(() => {
+        const counter: { [key: string]: number } = {}
+
+        if (bun) {
+            counter[bun._id] = 2
+        }
+
+        selectedIngredients.forEach((item) => {
+            counter[item._id] = (counter[item._id] || 0) + 1
+        })
+
+        return counter
+    }, [bun, selectedIngredients])
 
     const handleScroll = () => {
         if (!containerRef.current || !bunsRef.current || !saucesRef.current || !mainsRef.current) return
