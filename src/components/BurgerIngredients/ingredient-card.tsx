@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useDrag } from 'react-dnd'
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { IIngredient } from '../../types'
 import styles from './ingredient-card.module.scss'
@@ -10,8 +11,20 @@ interface IngredientCardProps {
 }
 
 export const IngredientCard: FC<IngredientCardProps> = ({ ingredient, count, onClick }) => {
+    const [{ isDrag }, dragRef] = useDrag({
+        type: 'ingredient',
+        item: ingredient,
+        collect: monitor => ({
+            isDrag: monitor.isDragging()
+        })
+    })
+
     return (
-        <article className={styles.card} onClick={onClick}>
+        <article
+            ref={dragRef}
+            className={`${styles.card} ${isDrag ? styles.dragging : ''}`}
+            onClick={onClick}
+        >
             {count > 0 && (
                 <Counter count={count} size="default" extraClass={styles.counter} />
             )}

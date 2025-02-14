@@ -1,8 +1,8 @@
-.container {
+.constructor {
+  width: 600px;
+  gap: 16px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  width: 600px;
 }
 
 .components {
@@ -22,7 +22,8 @@
   gap: 16px;
   max-height: calc(100vh - 536px);
   overflow-y: auto;
-  padding-right: 8px;
+  margin-left: 32px;
+  margin-right: 8px;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -35,6 +36,11 @@
   &::-webkit-scrollbar-thumb {
     background: #8585AD;
   }
+}
+
+.fillingWithContent {
+  margin-left: 0;
+  margin-right: 8px;
 }
 
 .filling {
@@ -65,4 +71,48 @@
     width: 36px;
     height: 36px;
   }
+}
+
+.dropTarget {
+  width: 100%;
+  height: 80px;
+  background: #2F2F37;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 16px;
+  box-sizing: border-box;
+
+  p {
+    text-align: center;
+    color: #8585AD;
+  }
+}
+
+.placeholder {
+  max-width: 536px;
+  width: 100%;
+  min-height: 80px;
+  background: #2F2F37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  box-sizing: border-box;
+}
+
+.highlighted {
+  background: #1C1C21;
+  border: 2px solid #4C4CFF;
+  box-shadow: 0px 0px 16px 8px rgba(51, 51, 255, 0.25),
+  inset 0px 0px 8px rgba(51, 51, 255, 0.25);
+}
+
+.bunTop {
+  border-radius: 88px 88px 40px 40px;
+}
+
+.bunBottom {
+  border-radius: 40px 40px 88px 88px;
 }
