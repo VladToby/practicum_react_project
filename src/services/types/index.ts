@@ -28,6 +28,11 @@ export interface IConstructorIngredient extends IIngredient {
     uuid: string
 }
 
+export interface IUser {
+    name: string
+    email: string
+}
+
 export interface IConstructorState {
     bun: IIngredient | null
     ingredients: Array<IIngredient & { uuid: string }>
@@ -49,22 +54,25 @@ export interface IIngredientsState {
     itemsFailed: boolean
 }
 
+export interface IUserState {
+    user: IUser | null
+    isAuth: boolean
+    registerRequest: boolean
+    registerFailed: boolean
+    loginRequest: boolean
+    loginFailed: boolean
+    logoutRequest: boolean
+    logoutFailed: boolean
+    getUserRequest: boolean
+    getUserFailed: boolean
+    updateUserRequest: boolean
+    updateUserFailed: boolean
+}
+
 export interface RootState {
-    ingredients: {
-        items: IIngredient[]
-        itemsRequest: boolean
-        itemsFailed: boolean
-    }
-    burgerConstructor: {
-        bun: IIngredient | null
-        ingredients: Array<IIngredient & { uuid: string }>
-    }
-    order: {
-        orderNumber: number | null
-        orderRequest: boolean
-        orderFailed: boolean
-    }
-    ingredientDetails: {
-        item: IIngredient | null
-    }
+    ingredients: IIngredientsState
+    burgerConstructor: IConstructorState
+    order: IOrderState
+    ingredientDetails: IIngredientDetailsState
+    user: IUserState
 }

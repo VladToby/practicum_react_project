@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 24px;
+  max-width: 480px;
+  border-radius: 40px;
+  padding: 0 40px 80px;
+}
+
+.title {
+  margin-bottom: 24px;
+}
+
+.input {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.link {
+  color: #4C4CFF;
+  text-decoration: none;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.submit {
+  margin-top: 24px;
+  width: 196px;
+}

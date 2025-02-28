@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { useDrag } from 'react-dnd'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { IIngredient } from '../../types'
 import styles from './ingredient-card.module.scss'
@@ -7,10 +8,18 @@ import styles from './ingredient-card.module.scss'
 interface IngredientCardProps {
     ingredient: IIngredient
     count: number
-    onClick: () => void
 }
 
-export const IngredientCard: FC<IngredientCardProps> = ({ ingredient, count, onClick }) => {
+export const IngredientCard: FC<IngredientCardProps> = ({ ingredient, count }) => {
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const handleClick = () => {
+        navigate(`/ingredients/${ingredient._id}`, {
+            state: { background: location }
+        })
+    }
+
     const [{ isDrag }, dragRef] = useDrag({
         type: 'ingredient',
         item: ingredient,
@@ -23,7 +32,7 @@ export const IngredientCard: FC<IngredientCardProps> = ({ ingredient, count, onC
         <article
             ref={dragRef}
             className={`${styles.card} ${isDrag ? styles.dragging : ''}`}
-            onClick={onClick}
+            onClick={handleClick}
         >
             {count > 0 && (
                 <Counter count={count} size="default" extraClass={styles.counter} />

@@ -10,11 +10,26 @@ export const OrderDetails: React.FC = () => {
     )
 
     if (orderRequest) {
-        return <p className="text text_type_main-medium">Оформляем заказ...</p>
+        return (
+            <div className={styles.order}>
+                <p className="text text_type_main-medium">Оформляем заказ...</p>
+                <div className={styles.loader}></div>
+                <p className="text text_type_main-default text_color_inactive">
+                    Пожалуйста, подождите
+                </p>
+            </div>
+        )
     }
 
     if (orderFailed) {
-        return <p className="text text_type_main-medium">Произошла ошибка при оформлении заказа</p>
+        return (
+            <div className={styles.order}>
+                <p className="text text_type_main-medium">Произошла ошибка при оформлении заказа</p>
+                <p className="text text_type_main-default text_color_inactive">
+                    Пожалуйста, попробуйте еще раз
+                </p>
+            </div>
+        )
     }
 
     return (
