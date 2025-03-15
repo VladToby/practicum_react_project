@@ -1,30 +1,24 @@
-# React + TypeScript + Vite
+## Stellar Burgers
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+### При разработке были использованы следующие технологии:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Vite
+- Typescript (изначально на TS)
+- React
+- Redux
+- React Router
+- Препроцессор SCSS
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Установка
 
-- Configure the top-level `parserOptions` property like this:
+#### Для установки нужно выполнить следующие действия:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Склонировать данный репозиторий (git clone *ссылка на репозиторий*)
+- В корне проекта запустить команду **npm install**, для установки зависимостей
+- **npm run dev** запуск проекта в режиме разработчика
+- В браузере откройте страницу [localhost:5173](localhost:5173)
+- **npm run build** сборка билда
+- **npm run start** запуск проекта в режиме сборки
