@@ -1,7 +1,8 @@
-import React, { useState, FormEvent } from 'react'
+import React, { FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useForm } from "../../hooks/useForm.ts"
 import { login } from '../../services/actions/user'
 import { AppDispatch, RootState } from '../../services/types'
 import styles from './login.module.scss'
@@ -12,19 +13,14 @@ export const LoginPage: React.FC = () => {
     const location = useLocation()
     const { loginRequest, loginFailed } = useSelector((state: RootState) => state.user)
 
-    const [form, setForm] = useState({
+    const { values, handleChange } = useForm({
         email: '',
         password: ''
     })
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setForm({ ...form, [name]: value })
-    }
-
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        dispatch(login(form.email, form.password))
+        dispatch(login(values.email, values.password))
             .then(() => {
                 const { from } = location.state?.from ? location.state : { from: { pathname: '/' } }
                 navigate(from)
@@ -38,14 +34,14 @@ export const LoginPage: React.FC = () => {
                 <div>
                     <EmailInput
                         name="email"
-                        value={form.email}
+                        value={values.email}
                         onChange={handleChange}
                     />
                 </div>
                 <div>
                     <PasswordInput
                         name="password"
-                        value={form.password}
+                        value={values.password}
                         onChange={handleChange}
                     />
                 </div>

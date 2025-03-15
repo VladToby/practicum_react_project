@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout, updateUser } from '../../services/actions/user'
+import { useForm } from "../../hooks/useForm.ts";
 import { RootState, AppDispatch } from '../../services/types'
 import styles from './profile.module.scss'
 
@@ -13,38 +14,43 @@ export const ProfilePage: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user)
     const { updateUserRequest, updateUserFailed } = useSelector((state: RootState) => state.user)
 
-    const [form, setForm] = useState({
-        name: '',
-        email: '',
+    const initialFormState = {
+        name: user?.name || '',
+        email: user?.email || '',
         password: ''
-    })
+    }
+
+    const { values, handleChange, setValues } = useForm(initialFormState)
 
     const [isFormChanged, setIsFormChanged] = useState(false)
 
     useEffect(() => {
         if (user) {
-            setForm(prev => ({
-                ...prev,
+            setValues({
                 name: user.name || '',
                 email: user.email || '',
                 password: ''
-            }))
+            })
         }
-    }, [user])
+    }, [user, setValues])
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setForm(prev => ({ ...prev, [name]: value }))
-        setIsFormChanged(true)
-    }
+    useEffect(() => {
+        if (user) {
+            const isChanged =
+                values.name !== user.name ||
+                values.email !== user.email ||
+                values.password !== '';
+            setIsFormChanged(isChanged);
+        }
+    }, [values, user])
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
-        if (form.password) {
-            dispatch(updateUser(form.name, form.email, form.password))
+        if (values.password) {
+            dispatch(updateUser(values.name, values.email, values.password))
         } else {
-            dispatch(updateUser(form.name, form.email))
+            dispatch(updateUser(values.name, values.email))
         }
 
         setIsFormChanged(false)
@@ -52,7 +58,7 @@ export const ProfilePage: React.FC = () => {
 
     const handleCancel = () => {
         if (user) {
-            setForm({
+            setValues({
                 name: user.name || '',
                 email: user.email || '',
                 password: ''
@@ -114,7 +120,7 @@ export const ProfilePage: React.FC = () => {
                                 placeholder="Имя"
                                 name="name"
                                 icon="EditIcon"
-                                value={form.name}
+                                value={values.name}
                                 onChange={handleChange}
                             />
                         </div>
@@ -124,7 +130,7 @@ export const ProfilePage: React.FC = () => {
                                 placeholder="Логин"
                                 name="email"
                                 icon="EditIcon"
-                                value={form.email}
+                                value={values.email}
                                 onChange={handleChange}
                             />
                         </div>
@@ -133,7 +139,7 @@ export const ProfilePage: React.FC = () => {
                                 placeholder="Пароль"
                                 name="password"
                                 icon="EditIcon"
-                                value={form.password}
+                                value={values.password}
                                 onChange={handleChange}
                             />
                         </div>

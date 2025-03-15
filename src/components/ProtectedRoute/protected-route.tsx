@@ -2,6 +2,7 @@ import { FC, ReactElement } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../services/types'
+import {Preloader} from "../Preloader/preloader.tsx";
 
 interface ProtectedRouteProps {
     element: ReactElement
@@ -9,8 +10,12 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: FC<ProtectedRouteProps> = ({ element, onlyAuth = true }) => {
-    const isAuth = useSelector((state: RootState) => state.user.isAuth)
+    const { isAuth, getUserRequest } = useSelector((state: RootState) => state.user)
     const location = useLocation()
+
+    if (getUserRequest) {
+        return <Preloader />
+    }
 
     if (onlyAuth && !isAuth) {
         return <Navigate to="/login" state={{ from: location }} replace />

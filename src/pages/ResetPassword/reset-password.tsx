@@ -1,11 +1,12 @@
 import React, { useState, FormEvent, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useForm } from "../../hooks/useForm.ts"
 import { userApi } from '../../utils/api'
 import styles from './reset-password.module.scss'
 
 export const ResetPasswordPage: React.FC = () => {
-    const [form, setForm] = useState({
+    const { values, handleChange } = useForm({
         password: '',
         token: ''
     })
@@ -20,17 +21,12 @@ export const ResetPasswordPage: React.FC = () => {
         }
     }, [navigate])
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setForm({ ...form, [name]: value })
-    }
-
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
         setIsRequesting(true)
         setHasError(false)
 
-        userApi.resetPassword(form.password, form.token)
+        userApi.resetPassword(values.password, values.token)
             .then(res => {
                 if (res.success) {
                     localStorage.removeItem('resetPasswordStarted')
@@ -55,7 +51,7 @@ export const ResetPasswordPage: React.FC = () => {
                     <PasswordInput
                         placeholder="Введите новый пароль"
                         name="password"
-                        value={form.password}
+                        value={values.password}
                         onChange={handleChange}
                     />
                 </div>
@@ -64,7 +60,7 @@ export const ResetPasswordPage: React.FC = () => {
                         type="text"
                         placeholder="Введите код из письма"
                         name="token"
-                        value={form.token}
+                        value={values.token}
                         onChange={handleChange}
                     />
                 </div>
@@ -78,7 +74,7 @@ export const ResetPasswordPage: React.FC = () => {
                         htmlType="submit"
                         type="primary"
                         size="medium"
-                        disabled={isRequesting || !form.password || !form.token}
+                        disabled={isRequesting || !values.password || !values.token}
                     >
                         {isRequesting ? 'Сохраняем...' : 'Сохранить'}
                     </Button>

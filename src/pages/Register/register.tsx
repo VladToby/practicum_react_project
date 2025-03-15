@@ -1,7 +1,8 @@
-import React, { useState, FormEvent } from 'react'
+import React, { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useForm } from "../../hooks/useForm.ts"
 import { register } from '../../services/actions/user'
 import { AppDispatch, RootState } from '../../services/types'
 import styles from './register.module.scss'
@@ -11,20 +12,15 @@ export const RegisterPage: React.FC = () => {
     const navigate = useNavigate()
     const { registerRequest, registerFailed } = useSelector((state: RootState) => state.user)
 
-    const [form, setForm] = useState({
+    const { values, handleChange } = useForm({
         name: '',
         email: '',
         password: ''
     })
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setForm({ ...form, [name]: value })
-    }
-
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        dispatch(register(form.name, form.email, form.password))
+        dispatch(register(values.name, values.email, values.password))
             .then(() => {
                 navigate('/')
             })
@@ -39,7 +35,7 @@ export const RegisterPage: React.FC = () => {
                         type="text"
                         placeholder="Имя"
                         name="name"
-                        value={form.name}
+                        value={values.name}
                         onChange={handleChange}
                     />
                 </div>
@@ -48,14 +44,14 @@ export const RegisterPage: React.FC = () => {
                         type="email"
                         placeholder="E-mail"
                         name="email"
-                        value={form.email}
+                        value={values.email}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="mb-6">
                     <PasswordInput
                         name="password"
-                        value={form.password}
+                        value={values.password}
                         onChange={handleChange}
                     />
                 </div>

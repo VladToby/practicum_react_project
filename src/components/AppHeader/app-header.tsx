@@ -42,7 +42,9 @@ export const AppHeader: React.FC = () => {
                         </NavLink>
                     </div>
                     <div className={styles.logo}>
-                        <Logo />
+                        <NavLink to={'/'}>
+                            <Logo />
+                        </NavLink>
                     </div>
                     <div className={styles.rightGroup}>
                         <NavLink

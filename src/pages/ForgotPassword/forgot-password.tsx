@@ -1,11 +1,14 @@
 import React, { useState, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useForm } from "../../hooks/useForm.ts"
 import { userApi } from '../../utils/api'
 import styles from './forgot-password.module.scss'
 
 export const ForgotPasswordPage: React.FC = () => {
-    const [email, setEmail] = useState('')
+    const { values, handleChange } = useForm({
+        email: ''
+    })
     const [isRequesting, setIsRequesting] = useState(false)
     const [hasError, setHasError] = useState(false)
     const navigate = useNavigate()
@@ -15,7 +18,7 @@ export const ForgotPasswordPage: React.FC = () => {
         setIsRequesting(true)
         setHasError(false)
 
-        userApi.forgotPassword(email)
+        userApi.forgotPassword(values.email)
             .then(res => {
                 if (res.success) {
                     localStorage.setItem('resetPasswordStarted', 'true')
@@ -40,8 +43,8 @@ export const ForgotPasswordPage: React.FC = () => {
                     <EmailInput
                         placeholder="Укажите e-mail"
                         name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={values.email}
+                        onChange={handleChange}
                     />
                 </div>
                 {hasError && (
@@ -54,7 +57,7 @@ export const ForgotPasswordPage: React.FC = () => {
                         htmlType="submit"
                         type="primary"
                         size="medium"
-                        disabled={isRequesting || !email}
+                        disabled={isRequesting || !values.email}
                     >
                         {isRequesting ? 'Отправка...' : 'Восстановить'}
                     </Button>
