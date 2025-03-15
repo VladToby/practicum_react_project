@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { IIngredient } from '../../types'
+import { RootState } from '../../services/types'
 import './ingredient-details.scss'
 
-interface IngredientDetailsProps {
-    ingredient: IIngredient
-}
+export const IngredientDetails: React.FC = () => {
+    const { id } = useParams<{ id: string }>()
+    const ingredients = useSelector((state: RootState) => state.ingredients.items)
+    const [ingredient, setIngredient] = useState<IIngredient | null>(null)
 
-export const IngredientDetails: React.FC<IngredientDetailsProps> = ({ ingredient }) => {
+    useEffect(() => {
+        if (id && ingredients.length) {
+            const foundIngredient = ingredients.find(item => item._id === id)
+            if (foundIngredient) {
+                setIngredient(foundIngredient)
+            }
+        }
+    }, [id, ingredients])
+
+    if (!ingredient) {
+        return <div className="text text_type_main-medium">Загрузка...</div>
+    }
+
     return (
         <div className="ingredient-details">
             <img

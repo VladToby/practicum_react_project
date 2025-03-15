@@ -1,9 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import { IIngredient } from '../../types'
-import { Modal } from '../Modal/modal'
-import { IngredientDetails } from '../IngredientDetails/ingredient-details'
 import { RootState } from '../../services/types'
 import { IngredientCard } from './ingredient-card'
 import styles from './burger-ingredients.module.scss'
@@ -12,7 +9,6 @@ type TabType = 'bun' | 'sauce' | 'main'
 
 export const BurgerIngredients: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<TabType>('bun')
-    const [selectedIngredient, setSelectedIngredient] = useState<IIngredient | null>(null)
     const ingredients = useSelector((state: RootState) => state.ingredients.items)
     const { bun, ingredients: selectedIngredients } = useSelector(
         (state: RootState) => state.burgerConstructor
@@ -65,14 +61,6 @@ export const BurgerIngredients: React.FC = () => {
         }
     }
 
-    const handleIngredientClick = (ingredient: IIngredient) => {
-        setSelectedIngredient(ingredient)
-    }
-
-    const closeModal = () => {
-        setSelectedIngredient(null)
-    }
-
     const buns = ingredients.filter(item => item.type === 'bun')
     const sauces = ingredients.filter(item => item.type === 'sauce')
     const mains = ingredients.filter(item => item.type === 'main')
@@ -120,7 +108,6 @@ export const BurgerIngredients: React.FC = () => {
                                 key={item._id}
                                 ingredient={item}
                                 count={counts[item._id] || 0}
-                                onClick={() => handleIngredientClick(item)}
                             />
                         ))}
                     </div>
@@ -134,7 +121,6 @@ export const BurgerIngredients: React.FC = () => {
                                 key={item._id}
                                 ingredient={item}
                                 count={counts[item._id] || 0}
-                                onClick={() => handleIngredientClick(item)}
                             />
                         ))}
                     </div>
@@ -148,18 +134,11 @@ export const BurgerIngredients: React.FC = () => {
                                 key={item._id}
                                 ingredient={item}
                                 count={counts[item._id] || 0}
-                                onClick={() => handleIngredientClick(item)}
                             />
                         ))}
                     </div>
                 </section>
             </div>
-
-            {selectedIngredient && (
-                <Modal title="Детали ингредиента" onClose={closeModal}>
-                    <IngredientDetails ingredient={selectedIngredient} />
-                </Modal>
-            )}
         </section>
     )
 }

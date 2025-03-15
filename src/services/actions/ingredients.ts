@@ -3,7 +3,7 @@ import {
     GET_INGREDIENTS_SUCCESS,
     GET_INGREDIENTS_FAILED
 } from '../constants'
-import { ingredientsApi } from '../api'
+import { ingredientsApi } from '../../utils/api'
 import { AppThunk, AppDispatch } from '../types'
 
 export const getIngredients = (): AppThunk => {

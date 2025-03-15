@@ -1,23 +1,32 @@
 import React, { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch } from '../../services/types'
+import { useNavigate } from 'react-router-dom'
 import { useDrop } from 'react-dnd'
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { addIngredient, removeIngredient, moveIngredient } from '../../services/actions/burger-constructor'
+import { createOrder } from '../../services/actions/order'
 import { IIngredient } from '../../types'
 import { Modal } from '../Modal/modal'
 import { OrderDetails } from '../OrderDetails/order-details'
-import { createOrder } from '../../services/actions/order'
-import { RootState } from '../../services/types'
+import { RootState, AppDispatch } from '../../services/types'
 import { ConstructorItem } from './constructor-item'
 import styles from './burger-constructor.module.scss'
 
 export const BurgerConstructor: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
     const [isOrderModalOpen, setIsOrderModalOpen] = React.useState(false)
 
     const { bun, ingredients: selectedIngredients } = useSelector(
         (state: RootState) => state.burgerConstructor
+    )
+
+    const { orderRequest } = useSelector(
+        (state: RootState) => state.order
+    )
+
+    const isAuth = useSelector(
+        (state: RootState) => state.user.isAuth
     )
 
     const handleDelete = (uuid: string) => {
@@ -38,6 +47,11 @@ export const BurgerConstructor: FC = () => {
 
     const handleOrderClick = () => {
         if (!bun) return
+
+        if (!isAuth) {
+            navigate('/login')
+            return
+        }
 
         const orderIngredients = [
             bun._id,
@@ -143,9 +157,9 @@ export const BurgerConstructor: FC = () => {
                         size="large"
                         onClick={handleOrderClick}
                         htmlType="button"
-                        disabled={!bun || !selectedIngredients?.length}
+                        disabled={!bun || !selectedIngredients?.length || orderRequest}
                     >
-                        Оформить заказ
+                        {orderRequest ? 'Оформляем...' : 'Оформить заказ'}
                     </Button>
                 </div>
             </section>

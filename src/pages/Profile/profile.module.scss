@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 120px 0;
+  gap: 60px;
+}
+
+.sidebar {
+  width: 320px;
+}
+
+.navigation {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: 20px;
+  }
+}
+
+.link {
+  color: #8585AD;
+  font-size: 24px;
+  line-height: 30px;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    color: #F2F2F3;
+  }
+}
+
+.activeLink {
+  color: #F2F2F3;
+  font-size: 24px;
+  line-height: 30px;
+  text-decoration: none;
+}
+
+.logoutButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #8585AD;
+  font-size: 24px;
+  line-height: 30px;
+  padding: 0;
+  text-align: left;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #F2F2F3;
+  }
+}
+
+.description {
+  opacity: 0.4;
+}
+
+.content {
+  flex-grow: 1;
+  max-width: 640px;
+  padding: 0 40px;
+}
+
+.form {
+  width: 100%;
+}
+
+.formTitle {
+  margin-bottom: 24px;
+}
+
+.formGroup {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.formInput {
+  width: 100%;
+
+  & > div {
+    width: 100%;
+  }
+}
+
+.editIcon {
+  position: absolute;
+  right: 24px;
+  top: 20px;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.historyLink {
+  display: block;
+  color: #8585AD;
+  font-size: 24px;
+  line-height: 30px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #F2F2F3;
+  }
+
+  &Active {
+    color: #F2F2F3;
+  }
+}

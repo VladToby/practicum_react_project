@@ -1,4 +1,4 @@
-import { orderApi } from '../api'
+import { orderApi } from '../../utils/api'
 import {
     CREATE_ORDER_REQUEST,
     CREATE_ORDER_SUCCESS,
@@ -10,8 +10,10 @@ import { AppThunk, AppDispatch } from '../types'
 export const createOrder = (ingredients: string[]): AppThunk => {
     return async (dispatch: AppDispatch) => {
         dispatch({ type: CREATE_ORDER_REQUEST })
+
         try {
             const response = await orderApi.createOrder(ingredients)
+
             if (response && response.success) {
                 dispatch({
                     type: CREATE_ORDER_SUCCESS,
