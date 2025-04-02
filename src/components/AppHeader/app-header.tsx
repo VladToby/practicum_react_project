@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useSelector } from '../../services/hooks'
 import { RootState } from '../../services/types'
 import styles from './app-header.module.scss'
 

@@ -12,7 +12,7 @@ export interface IIngredient {
     image_large: string
 }
 
-export interface RootState {
+export interface IRootState {
     ingredients: {
         items: IIngredient[]
         itemsRequest: boolean

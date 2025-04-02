@@ -1,32 +1,31 @@
 import React, { FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useDrop } from 'react-dnd'
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { addIngredient, removeIngredient, moveIngredient } from '../../services/actions/burger-constructor'
 import { createOrder } from '../../services/actions/order'
-import { IIngredient } from '../../types'
+import { IIngredient } from '../../services/types'
 import { Modal } from '../Modal/modal'
 import { OrderDetails } from '../OrderDetails/order-details'
-import { RootState, AppDispatch } from '../../services/types'
+import { useDispatch, useSelector } from '../../services/hooks'
 import { ConstructorItem } from './constructor-item'
 import styles from './burger-constructor.module.scss'
 
 export const BurgerConstructor: FC = () => {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const [isOrderModalOpen, setIsOrderModalOpen] = React.useState(false)
 
     const { bun, ingredients: selectedIngredients } = useSelector(
-        (state: RootState) => state.burgerConstructor
+        (state) => state.burgerConstructor
     )
 
     const { orderRequest } = useSelector(
-        (state: RootState) => state.order
+        (state) => state.order
     )
 
     const isAuth = useSelector(
-        (state: RootState) => state.user.isAuth
+        (state) => state.user.isAuth
     )
 
     const handleDelete = (uuid: string) => {

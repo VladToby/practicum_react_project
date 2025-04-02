@@ -1,0 +1,85 @@
+.card {
+  background: #1C1C21;
+  border-radius: 40px;
+  padding: 24px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 16px rgba(51, 51, 255, 0.25);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin-bottom: 8px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.ingredients {
+  display: flex;
+  position: relative;
+  min-width: 200px;
+  height: 64px;
+}
+
+.ingredient {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #131316;
+  border: 2px solid #4C4CFF;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ingredientImage {
+  width: 112%;
+  height: 112%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hiddenCount {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(28, 28, 33, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusDone {
+  color: #00CCCC;
+}
+
+.statusCanceled {
+  color: #E52B1A;
+}
