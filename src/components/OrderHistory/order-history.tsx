@@ -15,17 +15,20 @@ export const OrderHistory: FC<IOrderHistoryProps> = ({ onOrderClick }) => {
     const { wsConnected, orders = [] } = useSelector((state) => state.wsUserOrders)
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '')
+        // Получаем токен из localStorage
+        const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
 
         if (accessToken) {
-            const url = `${WS_URL_USER_ORDERS}?token=${accessToken}`
-            dispatch(wsUserConnectionStart(url))
+            // Добавляем токен в URL для авторизации
+            const url = `${WS_URL_USER_ORDERS}?token=${accessToken}`;
+            dispatch(wsUserConnectionStart(url));
         }
 
+        // Отключаемся от WebSocket при размонтировании компонента
         return () => {
-            dispatch(wsUserConnectionStop())
-        }
-    }, [dispatch])
+            dispatch(wsUserConnectionStop());
+        };
+    }, [dispatch]);
 
     return (
         <div className={styles.ordersList}>

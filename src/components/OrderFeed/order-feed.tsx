@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../../services/hooks'
 import { OrderCard } from '../OrderCard/order-card'
 import { IOrder } from '../../services/types/ws-types'
 import { wsConnectionStart, wsConnectionStop } from '../../services/actions/ws-orders'
 import { WS_URL_ALL_ORDERS } from '../../services/constants/ws'
-import { AppDispatch, RootState } from '../../services/types'
+import { RootState } from '../../services/types'
 import styles from './order-feed.module.scss'
 
 interface IOrderFeedProps {
@@ -12,7 +12,7 @@ interface IOrderFeedProps {
 }
 
 export const OrderFeed: FC<IOrderFeedProps> = ({ onOrderClick }) => {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch()
     const { wsConnected = false, orders = [], total = 0, totalToday = 0 } = useSelector((state: RootState) => state.wsOrders || {})
 
     const doneOrders = orders.filter(order => order.status === 'done').slice(0, 10)
@@ -23,12 +23,12 @@ export const OrderFeed: FC<IOrderFeedProps> = ({ onOrderClick }) => {
     const additionalPendingOrders = orders.filter(order => order.status === 'pending').slice(10, 20)
 
     useEffect(() => {
-        dispatch(wsConnectionStart(WS_URL_ALL_ORDERS))
+        dispatch(wsConnectionStart(WS_URL_ALL_ORDERS));
 
         return () => {
-            dispatch(wsConnectionStop())
-        }
-    }, [dispatch])
+            dispatch(wsConnectionStop());
+        };
+    }, [dispatch]);
 
     return (
         <div className={styles.container}>

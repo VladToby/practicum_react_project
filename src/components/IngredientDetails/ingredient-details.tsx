@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../services/hooks'
 import { IIngredient } from '../../types'
 import { RootState } from '../../services/types'
 import './ingredient-details.scss'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../services/hooks'
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { RootState } from '../../services/types'
 import styles from './order-details.module.scss'

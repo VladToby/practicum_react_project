@@ -1,14 +1,14 @@
 import React, { FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../../services/hooks'
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from "../../hooks/useForm.ts"
 import { login } from '../../services/actions/user'
-import { AppDispatch, RootState } from '../../services/types'
+import { RootState } from '../../services/types'
 import styles from './login.module.scss'
 
 export const LoginPage: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
     const { loginRequest, loginFailed } = useSelector((state: RootState) => state.user)
