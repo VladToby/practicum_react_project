@@ -30,7 +30,7 @@ const loadState = (): IConstructorState => {
     }
 }
 
-const initialState: IConstructorState = loadState()
+export const initialState: IConstructorState = loadState()
 
 const saveState = (state: IConstructorState) => {
     try {

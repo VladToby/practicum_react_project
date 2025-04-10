@@ -10,6 +10,8 @@
 - Redux
 - React Router
 - Препроцессор SCSS
+- Unit тесты
+- Cypress тесты
 
 
 ### Установка
@@ -22,3 +24,12 @@
 - В браузере откройте страницу [localhost:5173](localhost:5173)
 - **npm run build** сборка билда
 - **npm run start** запуск проекта в режиме сборки
+
+### Запуск тестов
+- npm run test - **Unit-тесты**
+- npm run test:e2e - **E2E-тесты**
+
+### Запуск деплоя
+- npm run deploy
+
+## [Ссылка на Github Pages](https://vladtoby.github.io/practicum_react_project/index.html)

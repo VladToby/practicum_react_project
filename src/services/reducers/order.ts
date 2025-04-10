@@ -11,7 +11,7 @@ import {
 } from '../actions/order-details'
 import { IOrderState } from '../types'
 
-const initialState: IOrderState = {
+export const initialState: IOrderState = {
     orderNumber: null,
     orderRequest: false,
     orderFailed: false,
