@@ -36,7 +36,7 @@ interface IUserState {
     updateUserFailed: boolean
 }
 
-const initialState: IUserState = {
+export const initialState: IUserState = {
     user: null,
     isAuth: false,
     registerRequest: false,

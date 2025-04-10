@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { ingredientsReducer } from '../ingredients'
+import { ingredientsReducer, initialState } from '../ingredients'
 import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
@@ -7,12 +7,6 @@ import {
 } from '../../constants'
 
 describe('ingredients reducer', () => {
-    const initialState = {
-        items: [],
-        itemsRequest: false,
-        itemsFailed: false,
-    }
-
     it('должен вернуть начальное состояние', () => {
         expect(ingredientsReducer(undefined, {})).toEqual(initialState)
     })

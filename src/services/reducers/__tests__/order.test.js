@@ -1,61 +1,65 @@
 import { describe, it, expect } from 'vitest'
-import { ingredientDetailsReducer } from '../ingredient-details'
+import { orderReducer, initialState } from '../order'
 import {
-    SET_INGREDIENT_DETAILS,
-    CLEAR_INGREDIENT_DETAILS
+    CREATE_ORDER_REQUEST,
+    CREATE_ORDER_SUCCESS,
+    CREATE_ORDER_FAILED
 } from '../../constants'
 
-describe('ingredient-details reducer', () => {
-    const initialState = {
-        item: null
-    }
-
+describe('order reducer', () => {
     it('должен вернуть начальное состояние', () => {
-        expect(ingredientDetailsReducer(undefined, {})).toEqual(initialState)
+        expect(orderReducer(undefined, {})).toEqual(initialState)
     })
 
-    it('должен обработать SET_INGREDIENT_DETAILS', () => {
-        const ingredient = {
-            _id: '60d3b41abdacab0026a733c6',
-            name: 'Ингредиент',
-            type: 'main',
-            proteins: 10,
-            fat: 5,
-            carbohydrates: 15,
-            calories: 200,
-            price: 100,
-            image: 'image.png',
-            image_mobile: 'image_mobile.png',
-            image_large: 'image_large.png'
-        }
-
+    it('должен обработать CREATE_ORDER_REQUEST', () => {
         const action = {
-            type: SET_INGREDIENT_DETAILS,
-            payload: ingredient
+            type: CREATE_ORDER_REQUEST
         }
 
-        const newState = ingredientDetailsReducer(initialState, action)
+        const newState = orderReducer(initialState, action)
 
         expect(newState).toEqual({
             ...initialState,
-            item: ingredient
+            orderRequest: true
         })
     })
 
-    it('должен обработать CLEAR_INGREDIENT_DETAILS', () => {
-        const stateWithIngredient = {
-            item: {
-                _id: '60d3b41abdacab0026a733c6',
-                name: 'Ингредиент'
-            }
-        }
+    it('должен обработать CREATE_ORDER_SUCCESS', () => {
+        const orderNumber = 12345
 
         const action = {
-            type: CLEAR_INGREDIENT_DETAILS
+            type: CREATE_ORDER_SUCCESS,
+            payload: orderNumber
         }
 
-        const newState = ingredientDetailsReducer(stateWithIngredient, action)
+        const newState = orderReducer({
+            ...initialState,
+            orderRequest: true
+        }, action)
 
-        expect(newState).toEqual(initialState)
+        expect(newState).toEqual({
+            ...initialState,
+            orderNumber: orderNumber,
+            orderRequest: false,
+            orderFailed: false
+        })
+    })
+
+    it('должен обработать CREATE_ORDER_FAILED', () => {
+        const action = {
+            type: CREATE_ORDER_FAILED
+        }
+
+        const newState = orderReducer({
+            ...initialState,
+            orderRequest: true
+        }, action)
+
+        expect(newState).toEqual({
+            ...initialState,
+            orderRequest: false,
+            orderFailed: true,
+            orderNumber: null
+        })
     })
 })

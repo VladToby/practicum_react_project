@@ -5,7 +5,7 @@ import {
 } from '../constants'
 import { IIngredientsState } from '../types'
 
-const initialState: IIngredientsState = {
+export const initialState: IIngredientsState = {
     items: [],
     itemsRequest: false,
     itemsFailed: false,

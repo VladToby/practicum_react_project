@@ -1,12 +1,11 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { burgerConstructorReducer } from '../burger-constructor'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { burgerConstructorReducer, initialState } from '../burger-constructor'
 import {
     ADD_INGREDIENT,
     REMOVE_INGREDIENT,
     MOVE_INGREDIENT,
     CLEAR_CONSTRUCTOR
 } from '../../constants'
-import { v4 as uuidv4 } from 'uuid'
 
 // Мокируем uuid для предсказуемости тестов
 vi.mock('uuid', () => ({
@@ -14,7 +13,6 @@ vi.mock('uuid', () => ({
 }))
 
 describe('burger-constructor reducer', () => {
-    let initialState
     let bunMock
     let sauceMock
     let mainMock
@@ -22,11 +20,6 @@ describe('burger-constructor reducer', () => {
     beforeEach(() => {
         // Сбрасываем localStorage перед каждым тестом
         localStorage.clear()
-
-        initialState = {
-            bun: null,
-            ingredients: []
-        }
 
         bunMock = {
             _id: '60d3b41abdacab0026a733c6',
@@ -146,9 +139,6 @@ describe('burger-constructor reducer', () => {
 
         const newState = burgerConstructorReducer(stateWithData, action)
 
-        expect(newState).toEqual({
-            bun: null,
-            ingredients: []
-        })
+        expect(newState).toEqual(initialState)
     })
 })

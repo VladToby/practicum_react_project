@@ -1,61 +1,126 @@
 import { describe, it, expect } from 'vitest'
-import { ingredientDetailsReducer } from '../ingredient-details'
+import { userReducer, initialState } from '../user'
 import {
-    SET_INGREDIENT_DETAILS,
-    CLEAR_INGREDIENT_DETAILS
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    REGISTER_FAILED,
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILED
 } from '../../constants'
 
-describe('ingredient-details reducer', () => {
-    const initialState = {
-        item: null
-    }
-
+describe('user reducer', () => {
     it('должен вернуть начальное состояние', () => {
-        expect(ingredientDetailsReducer(undefined, {})).toEqual(initialState)
+        expect(userReducer(undefined, {})).toEqual(initialState)
     })
 
-    it('должен обработать SET_INGREDIENT_DETAILS', () => {
-        const ingredient = {
-            _id: '60d3b41abdacab0026a733c6',
-            name: 'Ингредиент',
-            type: 'main',
-            proteins: 10,
-            fat: 5,
-            carbohydrates: 15,
-            calories: 200,
-            price: 100,
-            image: 'image.png',
-            image_mobile: 'image_mobile.png',
-            image_large: 'image_large.png'
-        }
-
+    it('должен обработать REGISTER_REQUEST', () => {
         const action = {
-            type: SET_INGREDIENT_DETAILS,
-            payload: ingredient
+            type: REGISTER_REQUEST
         }
 
-        const newState = ingredientDetailsReducer(initialState, action)
+        const newState = userReducer(initialState, action)
 
         expect(newState).toEqual({
             ...initialState,
-            item: ingredient
+            registerRequest: true,
+            registerFailed: false
         })
     })
 
-    it('должен обработать CLEAR_INGREDIENT_DETAILS', () => {
-        const stateWithIngredient = {
-            item: {
-                _id: '60d3b41abdacab0026a733c6',
-                name: 'Ингредиент'
-            }
+    it('должен обработать REGISTER_SUCCESS', () => {
+        const user = {
+            name: 'Test User',
+            email: 'test@example.com'
         }
 
         const action = {
-            type: CLEAR_INGREDIENT_DETAILS
+            type: REGISTER_SUCCESS,
+            payload: user
         }
 
-        const newState = ingredientDetailsReducer(stateWithIngredient, action)
+        const newState = userReducer({
+            ...initialState,
+            registerRequest: true
+        }, action)
 
-        expect(newState).toEqual(initialState)
+        expect(newState).toEqual({
+            ...initialState,
+            registerRequest: false,
+            user: user,
+            isAuth: true
+        })
+    })
+
+    it('должен обработать REGISTER_FAILED', () => {
+        const action = {
+            type: REGISTER_FAILED
+        }
+
+        const newState = userReducer({
+            ...initialState,
+            registerRequest: true
+        }, action)
+
+        expect(newState).toEqual({
+            ...initialState,
+            registerRequest: false,
+            registerFailed: true
+        })
+    })
+
+    it('должен обработать LOGIN_REQUEST', () => {
+        const action = {
+            type: LOGIN_REQUEST
+        }
+
+        const newState = userReducer(initialState, action)
+
+        expect(newState).toEqual({
+            ...initialState,
+            loginRequest: true,
+            loginFailed: false
+        })
+    })
+
+    it('должен обработать LOGIN_SUCCESS', () => {
+        const user = {
+            name: 'Test User',
+            email: 'test@example.com'
+        }
+
+        const action = {
+            type: LOGIN_SUCCESS,
+            payload: user
+        }
+
+        const newState = userReducer({
+            ...initialState,
+            loginRequest: true
+        }, action)
+
+        expect(newState).toEqual({
+            ...initialState,
+            loginRequest: false,
+            user: user,
+            isAuth: true
+        })
+    })
+
+    it('должен обработать LOGIN_FAILED', () => {
+        const action = {
+            type: LOGIN_FAILED
+        }
+
+        const newState = userReducer({
+            ...initialState,
+            loginRequest: true
+        }, action)
+
+        expect(newState).toEqual({
+            ...initialState,
+            loginRequest: false,
+            loginFailed: true
+        })
     })
 })

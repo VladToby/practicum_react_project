@@ -1,15 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { ingredientDetailsReducer } from '../ingredient-details'
+import { ingredientDetailsReducer, initialState } from '../ingredient-details'
 import {
     SET_INGREDIENT_DETAILS,
     CLEAR_INGREDIENT_DETAILS
 } from '../../constants'
 
 describe('ingredient-details reducer', () => {
-    const initialState = {
-        item: null
-    }
-
     it('должен вернуть начальное состояние', () => {
         expect(ingredientDetailsReducer(undefined, {})).toEqual(initialState)
     })

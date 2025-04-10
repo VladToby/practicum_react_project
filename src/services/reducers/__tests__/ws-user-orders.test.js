@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { wsUserOrdersReducer } from '../ws-user-orders'
+import { wsUserOrdersReducer, initialState } from '../ws-user-orders'
 import {
     USER_WS_CONNECTION_SUCCESS,
     USER_WS_CONNECTION_ERROR,
@@ -9,13 +9,6 @@ import {
 } from '../../constants/ws'
 
 describe('ws-user-orders reducer', () => {
-    const initialState = {
-        wsConnected: false,
-        orders: [],
-        total: 0,
-        totalToday: 0
-    }
-
     it('должен вернуть начальное состояние', () => {
         expect(wsUserOrdersReducer(undefined, {})).toEqual(initialState)
     })
