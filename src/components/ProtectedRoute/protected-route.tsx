@@ -1,8 +1,8 @@
 import { FC, ReactElement } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../services/hooks'
 import { RootState } from '../../services/types'
-import {Preloader} from "../Preloader/preloader.tsx";
+import { Preloader } from "../Preloader/preloader"
 
 interface ProtectedRouteProps {
     element: ReactElement

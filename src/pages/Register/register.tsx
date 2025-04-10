@@ -1,14 +1,14 @@
 import React, { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../../services/hooks'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from "../../hooks/useForm.ts"
 import { register } from '../../services/actions/user'
-import { AppDispatch, RootState } from '../../services/types'
+import { RootState } from '../../services/types'
 import styles from './register.module.scss'
 
 export const RegisterPage: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const { registerRequest, registerFailed } = useSelector((state: RootState) => state.user)
 

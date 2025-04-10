@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../services/hooks'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { RootState } from '../../services/types'
 import { IngredientCard } from './ingredient-card'

@@ -1,18 +1,17 @@
 import React, { useState, useEffect, FormEvent } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from '../../services/hooks'
 import { logout, updateUser } from '../../services/actions/user'
-import { useForm } from "../../hooks/useForm.ts";
-import { RootState, AppDispatch } from '../../services/types'
+import { useForm } from "../../hooks/useForm.ts"
 import styles from './profile.module.scss'
 
 export const ProfilePage: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
-    const user = useSelector((state: RootState) => state.user.user)
-    const { updateUserRequest, updateUserFailed } = useSelector((state: RootState) => state.user)
+    const user = useSelector((state) => state.user.user)
+    const { updateUserRequest, updateUserFailed } = useSelector((state) => state.user)
 
     const initialFormState = {
         name: user?.name || '',
@@ -39,8 +38,8 @@ export const ProfilePage: React.FC = () => {
             const isChanged =
                 values.name !== user.name ||
                 values.email !== user.email ||
-                values.password !== '';
-            setIsFormChanged(isChanged);
+                values.password !== ''
+            setIsFormChanged(isChanged)
         }
     }, [values, user])
 
@@ -108,13 +107,16 @@ export const ProfilePage: React.FC = () => {
                     </li>
                 </ul>
                 <p className={`${styles.description} text text_type_main-default text_color_inactive mt-20`}>
-                    В этом разделе вы можете изменить свои персональные данные
+                    {isProfilePage
+                        ? 'В этом разделе вы можете изменить свои персональные данные'
+                        : 'В этом разделе вы можете просмотреть свою историю заказов'
+                    }
                 </p>
             </div>
             <div className={styles.content}>
                 {isProfilePage ? (
                     <form className={styles.form} onSubmit={handleSubmit}>
-                        <div className="mb-6">
+                        <div>
                             <Input
                                 type="text"
                                 placeholder="Имя"
@@ -124,7 +126,7 @@ export const ProfilePage: React.FC = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="mb-6">
+                        <div>
                             <Input
                                 type="email"
                                 placeholder="Логин"
@@ -134,7 +136,7 @@ export const ProfilePage: React.FC = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="mb-6">
+                        <div>
                             <PasswordInput
                                 placeholder="Пароль"
                                 name="password"
@@ -144,7 +146,7 @@ export const ProfilePage: React.FC = () => {
                             />
                         </div>
                         {updateUserFailed && (
-                            <p className="text text_type_main-default text_color_error mb-4">
+                            <p className="text text_type_main-default text_color_error">
                                 Произошла ошибка при обновлении данных
                             </p>
                         )}
